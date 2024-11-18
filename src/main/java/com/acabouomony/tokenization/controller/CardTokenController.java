@@ -1,5 +1,6 @@
 package com.acabouomony.tokenization.controller;
 
+import com.acabouomony.tokenization.dto.CardDetailsResponse;
 import com.acabouomony.tokenization.dto.CardTokenRequest;
 import com.acabouomony.tokenization.dto.CardTokenResponse;
 import com.acabouomony.tokenization.model.Card;
@@ -23,8 +24,8 @@ public class CardTokenController {
     }
 
     @GetMapping("/{token}")
-    public ResponseEntity<Card> getCardByToken(@PathVariable String token) {
-        Card card = cardTokenService.getCardByToken(token);
-        return ResponseEntity.ok(card);
+    public ResponseEntity<CardDetailsResponse> getCardByToken(@PathVariable String token) {
+        CardDetailsResponse cardDetails = cardTokenService.getCardByToken(token);
+        return ResponseEntity.ok(cardDetails);
     }
 }

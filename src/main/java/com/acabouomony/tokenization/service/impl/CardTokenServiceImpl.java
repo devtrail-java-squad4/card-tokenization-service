@@ -1,5 +1,6 @@
 package com.acabouomony.tokenization.service.impl;
 
+import com.acabouomony.tokenization.dto.CardDetailsResponse;
 import com.acabouomony.tokenization.dto.CardTokenRequest;
 import com.acabouomony.tokenization.dto.CardTokenResponse;
 import com.acabouomony.tokenization.model.Card;
@@ -37,14 +38,17 @@ public class CardTokenServiceImpl implements CardTokenService {
     }
 
     @Override
-    public Card getCardByToken(String cardToken) {
+    public CardDetailsResponse getCardByToken(String cardToken) {
         Card card = cardRepository.findByCardToken(cardToken);
         if (card != null) {
-            // Optionally decrypt card number if required
-            String decryptedCardNumber = EncryptionUtil.decrypt(card.getEncryptedCardNumber());
-            card.setCardNumber(decryptedCardNumber);
+            return new CardDetailsResponse(
+                    card.getCardToken(),
+                    card.getMaskedCardNumber(),
+                    card.getExpirationDate(),
+                    card.getCardholderName()
+            );
         }
-        return card;
+        throw new RuntimeException("Card not found");
     }
 
     private String maskCardNumber(String cardNumber) {
